@@ -1,0 +1,63 @@
+
+
+# ---------------------------------------------------------------------------- #
+# ANCHOR REGION
+REGIONS: 
+  Yangtze: 
+    long_name: Yangtze_river_basin
+    lat_range: [27.5, 35] 
+    lon_range: [110, 122.5] 
+    shape_range: null
+  SC:
+    long_name: Souch_china
+    lat_range: [15, 27.5] 
+    lon_range: [102.5, 120] 
+    shape_range: 
+      region_level: PROVINCE 
+      region_names: ["Guangdong", "Guangxi", "Hainan"]
+  # GD:
+  #   long_name: Guangdong
+  #   lat_range: [20, 27.5] 
+  #   lon_range: [107.5, 120] 
+  #   shape_range:
+  #     region_level: PROVINCE 
+  #     region_names: Guangdong
+  CHN:
+    long_name: China
+    lat_range: [15, 55] 
+    lon_range: [70, 137.5] 
+    shape_range:
+      region_level: COUNTRY 
+      region_names: [China, Taiwan]
+  # EU:
+  #   long_name: Europe
+  #   lat_range: [35, 72.5] # [-10, 32, 36, 72]
+  #   lon_range: [350, 32.5] # [-10, 32, 36, 72]
+  #   shape_range: null 
+
+# ---------------------------------------------------------------------------- #
+# ANCHOR Data 
+DATAS:
+  input_factors: # NOTE: Candidates, not the final selection
+    uwnd: [1000, 850, 700, 500]
+    vwnd: [1000, 850, 700, 500]
+    shum: [1000, 850, 700, 500]
+    hgt: [1000, 850, 700, 500]
+    air: [1000, 850, 700, 500]
+    slp: null
+  input_source: NCEP_REANALYSIS
+  factor: precip
+  start_date: 1979-01-01
+  end_date: 2021-12-31
+# path to save data
+data_path: ./DATA
+# daily data
+in_daily_filepath: ${data_path}/${DATAS.factor}_{region}_in_daily.nc
+out_daily_filepath: ${data_path}/${DATAS.factor}_{region}_out_daily.nc
+out_mask_daily_filepath: ${data_path}/${DATAS.factor}_{region}_grid_mask_daily.npy
+# monthly data
+in_aug_filepath: ${data_path}/${DATAS.factor}_{region}_in_aug.nc
+in_noaug_filepath: ${data_path}/${DATAS.factor}_{region}_in_noaug.nc
+out_aug_filepath: ${data_path}/${DATAS.factor}_{region}_out_aug.nc
+out_noaug_filepath: ${data_path}/${DATAS.factor}_{region}_out_noaug.nc
+out_mask_filepath: ${data_path}/${DATAS.factor}_{region}_grid_mask.npy
