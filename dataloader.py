@@ -155,15 +155,18 @@ class DownscalingDataLoader(pl.LightningDataModule):
         if stage == "fit" or stage is None:
             self.train_dset = TensorDataset(
                 torch.from_numpy(self.x_train.values.astype(np.float32)),
-                torch.from_numpy(self.y_train.values.astype(np.float32)))
+                torch.from_numpy(self.y_train.values[:, self.grid_mask].astype(
+                    np.float32)))
 
             self.val_dset = TensorDataset(
                 torch.from_numpy(self.x_val.values.astype(np.float32)),
-                torch.from_numpy(self.y_val.values.astype(np.float32)))
+                torch.from_numpy(self.y_val.values[:, self.grid_mask].astype(
+                    np.float32)))
         if stage == "test" or stage is None:
             self.test_dset = TensorDataset(
                 torch.from_numpy(self.x_test.values.astype(np.float32)),
-                torch.from_numpy(self.y_test.values.astype(np.float32)))
+                torch.from_numpy(self.y_test.values[:, self.grid_mask].astype(
+                    np.float32)))
 
     def train_dataloader(self):
         return DataLoader(dataset=self.train_dset,
@@ -204,7 +207,8 @@ if __name__ == "__main__":
         f"Initial splits: #train - {len(train_index)}, #val - {len(val_index)}, #test - {test_index}"
     )
     selector = PredictorSelector()
-    dm = DownscalingDataLoader(cfg, selector, train_index, val_index, test_index)
+    dm = DownscalingDataLoader(cfg, selector, train_index, val_index,
+                               test_index)
     dm.setup("fit")
     for x, y in dm.train_dataloader():
         print(x.shape, y.shape)
