@@ -38,7 +38,7 @@ REGIONS:
 # ---------------------------------------------------------------------------- #
 # ANCHOR Data 
 DATAS:
-  input_factors: # NOTE: Candidates, not the final selection
+  input_factors: 
     uwnd: [1000, 850, 700, 500]
     vwnd: [1000, 850, 700, 500]
     shum: [1000, 850, 700, 500]
@@ -61,3 +61,23 @@ in_noaug_filepath: ${data_path}/${DATAS.factor}_{region}_in_noaug.nc
 out_aug_filepath: ${data_path}/${DATAS.factor}_{region}_out_aug.nc
 out_noaug_filepath: ${data_path}/${DATAS.factor}_{region}_out_noaug.nc
 out_mask_filepath: ${data_path}/${DATAS.factor}_{region}_grid_mask.npy
+
+# ---------------------------------------------------------------------------- #
+# ANCHOR Dataloader or Dataset
+region: SC
+start_year: 1979
+end_year: 2021
+num_years: 43
+num_folds: 7
+bistr: "00000100010101010101"
+# input_factors_sub: "11111111111111111111" # refer to selector/slect_predictors.py
+input_factors_sub: ${bistr} # refer to selector/slect_predictors.py
+x_processor_names: ["Standardisation"]
+y_processor_names: ["Standardisation"]
+aug: True
+val_aug: False
+test_aug: False
+
+batch_size: 1024
+shuffle: True
+num_workers: 0
