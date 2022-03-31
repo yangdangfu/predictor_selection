@@ -6,6 +6,7 @@ Predictor Selection for CNNs Inputting Stacked Variables
 The repository is working in progress, organizing and migrating the code from original implementations. 
 
 # Important scripts/modules/packages
+Note: Scripts are the main entry of the programs that can perform certain tasks, such as `main_data_preparation.py` can be executed to prepare data; `main_train.py` is used to train t
 - Data preparation
     - [data_utils](data_utils/readme.md): packages for downloading, loading raw data and other processes
     - [main_data_preparation.py](main_data_preparation.py): script to load data for given regions
@@ -18,6 +19,7 @@ The repository is working in progress, organizing and migrating the code from or
   - [dataloader.py](dataloader.py): dataloader module for Pytorch training
   - [model_wrapper.py](model_wrapper.py): module to wrap all CNN archs together with pytorch_lightning
   - [trainer.py](trainer.py): module to train the CNN, implementing based on pytorch_lightning and hydra
+  - [main_train.py](main_train.py): Script of CLI that execute CNN trainer with given parameters
 
 # Key Python requirements
 - Anaconda (numpy, pandas, etc.)
