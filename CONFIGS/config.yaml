@@ -81,3 +81,15 @@ test_aug: False
 batch_size: 1024
 shuffle: True
 num_workers: 0
+
+# ---------------------------------------------------------------------------- #
+# ANCHOR model 
+model: CNN10 # class name of the model, like CNN1, CNN_FC, CNN0, CNN10, CNN_LRF, etc.
+seed: null # if seed is int, the model parameter won't be randomly intilized
+padding: 1 
+
+optim_type: adam # adam or sgd
+loss_type: nan_mse
+lr: 1e-3
+weight_decay: 0
+# 
