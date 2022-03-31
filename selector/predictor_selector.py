@@ -38,14 +38,14 @@ class PredictorSelector:
                     idx_rmv, wgt_thd = (i, w) if w > wgt_thd else (idx_rmv,
                                                                    wgt_thd)
         if idx_rmv < 0:
-            return False
+            return None
         # run selection
         predictors_left = [
             p for p in self.predictors_left if p != predictors[idx_rmv]
         ]
         self.predictors_left = predictors_left
         self.predictors_removed.append(predictors[idx_rmv])
-        return True
+        return predictors[idx_rmv]
 
     def select_invert(self):
         self.predictors_left.append(self.predictors_removed.pop())
@@ -60,7 +60,7 @@ class PredictorSelector:
     def get_binary_strings(self, predictors_sub: list = None):
         """ Generate binary strings based on the provided subset predictors """
         if predictors_sub is None:
-            predictors_sub = self._PREDICTORS_ALL
+            predictors_sub = self.predictors_left
         # Assert that all the input subset predictors is within the candidate predictors
         cover = [
             True if var in self._PREDICTORS_ALL else False
