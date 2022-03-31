@@ -19,7 +19,6 @@ def multirun(num: int, **kwargs):
 
     # --------------------------------- training --------------------------------- #
     runs = get_rundirs(f"outputs_{kwargs['region']}", kwargs)
-    print(runs)
     if len(runs) == num:
         logger.warning(
             f"The number of runs has reached the required {num}, skip the train"
