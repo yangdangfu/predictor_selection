@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ 
 Usages:
-    python main_select.py --reverse_sel False --multirun 10 --region SC --model CNN10
+    python main_select.py --reverse_sel False --multirun 10 --re_pred False --re_weight False --re_score False --region SC --model CNN10
 """
 import subprocess
 from typing import Literal
@@ -36,7 +36,8 @@ def get_weights(rundirs: list, dset: Literal["train", "val", "test"] = "val"):
     return weights.tolist(), predictors
 
 
-def run_select(reverse_sel: bool, multirun: int, **run_kwargs):
+def run_select(reverse_sel: bool, multirun: int, re_pred: bool,
+               re_weight: bool, re_score: bool, **run_kwargs):
     REQUIRED_KEYS = ["region", "model"]
     arguments_check(run_kwargs.keys(), REQUIRED_KEYS)
 
@@ -46,21 +47,19 @@ def run_select(reverse_sel: bool, multirun: int, **run_kwargs):
     selector = PredictorSelector(predictors_all)
     run_kwargs.update(bistr=selector.get_binary_strings())  # add a bistr arg
 
-    for i in range(num_predictors):
+    for _ in range(num_predictors):
+        # if len(rundirs) < multirun:
+        cmd_sufix = ""
+        for key, val in run_kwargs.items():
+            cmd_sufix += f" --{key} {val}"
+        # run
+        run_cmd_cnn = f"python main_multirun.py --num {multirun} --re_pred {re_pred} --re_weight {re_weight} --re_score {re_score}" + cmd_sufix  # --weight_decay {run_kwargs['weight_decay']}
+        logger.info(f"Execute run command {run_cmd_cnn} ......")
+        subprocess.run(run_cmd_cnn.split(" "))
+        logger.info(f"Execute run command {run_cmd_cnn} donw")
 
         root_dir = f"outputs_{run_kwargs['region']}"
         rundirs = get_rundirs(root_dir, run_kwargs)
-
-        if len(rundirs) < multirun:
-            cmd_sufix = ""
-            for key, val in run_kwargs.items():
-                cmd_sufix += f" --{key} {val}"
-            # run
-            run_cmd_cnn = f"python main_multirun.py --num {multirun}" + cmd_sufix  # --weight_decay {run_kwargs['weight_decay']}
-            logger.info(f"Execute run command {run_cmd_cnn} ......")
-            subprocess.run(run_cmd_cnn.split(" "))
-            logger.info(f"Execute run command {run_cmd_cnn} donw")
-            rundirs = get_rundirs(root_dir, run_kwargs)
 
         assert len(rundirs) >= multirun, "Not enough runs!"
 
@@ -82,5 +81,5 @@ if __name__ == "__main__":
     # reverse_select_ = False
     # multirun_ = 2
     # run_kwargs_ = dict(region="SC", model="CNN10")
-    # run_select(reverse_select_, multirun_, **run_kwargs_)
+    # run_select(reverse_select_, multirun_, False, False, False, **run_kwargs_)
     fire.Fire(run_select)
