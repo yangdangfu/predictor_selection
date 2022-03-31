@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 @hydra.main(config_path="CONFIGS", config_name="config")
 def main(cfg: DictConfig):
-    coloredlogs.install(level="INFO")
+    coloredlogs.install(level="INFO", logger=logger)
 
     start_date = date.fromisoformat(cfg.DATAS.start_date)
     end_date = date.fromisoformat(cfg.DATAS.end_date)

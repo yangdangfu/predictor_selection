@@ -21,7 +21,6 @@ from weights_attribution import calc_weights_gbp
 import fire
 
 logger = logging.getLogger(os.path.basename(__file__))
-coloredlogs.install(level="INFO")
 
 
 def eval_single(rundir: str):
@@ -143,4 +142,5 @@ def eval(**kwargs):
 
 
 if __name__ == "__main__":
+    coloredlogs.install(level="INFO", logger=logger)
     fire.Fire(eval)
