@@ -2,6 +2,7 @@
 """
 Usages
     python main_train.py --region=SC --bistr=11111111111111111111
+TODO: There are bugs when use multirun feature in hydra
     python main_train.py --region=SC --bistr=[11111111111111111111,11111111111111111111,11111111111111111111] 
     python main_train.py --region=[SC,Yangtze] --bistr=[11111111111111111111,11110001111111111111,11111111100001111111] 
 """
