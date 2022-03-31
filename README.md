@@ -13,6 +13,7 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
 - Utilities
   - [utils.preprocessing.py](utils/preprocessing.py): data preprocessing and anti-processing functions
   - [utils/dataset_splits.py](utils/dataset_splits.py): module to perform dataset split
+  - [utils/get_rundirs.py](utils/get_rundirs.py): functions to fetch the directories according to given parameters (the trained models of different parameters are saved in directories in a regular way)
 - Selector
   - [selector.predictor_selector.py](selector/predictor_selector.py): predictor selector
 - CNN model
@@ -20,6 +21,10 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
   - [model_wrapper.py](model_wrapper.py): module to wrap all CNN archs together with pytorch_lightning
   - [trainer.py](trainer.py): module to train the CNN, implementing based on pytorch_lightning and hydra
   - [main_train.py](main_train.py): Script of CLI that execute CNN trainer with given parameters
+  - [predict.py](predict.py): A module to run prediction on given raw input data, as well as model and its metadata
+  - [score.py](score.py): A module to compute scores of prediction
+  - [weights_attribution.py](weights_attribution.py): Module to attribute weights to different predictors
+  - [main_eval.py](main_eval.py): Script to run prediction, evaluation and other processes for trained CNN models, all intermediate results will be saved for latter use
 
 # Key Python requirements
 - Anaconda (numpy, pandas, etc.)
@@ -28,3 +33,5 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
 - pytorch
 - pytorch-lightning  
 - fire
+- coloredlogs, prettytabble
+- xskillscore
