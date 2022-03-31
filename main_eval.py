@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+""" 
+Usages: 
+    python main_eval.py --bistr 00000100010101010101 --region SC
+"""
 import os
 from prettytable import PrettyTable
 import torch
@@ -14,6 +18,7 @@ import numpy as np
 from predict import predit
 import pickle
 from weights_attribution import calc_weights_gbp
+import fire
 
 logger = logging.getLogger(os.path.basename(__file__))
 coloredlogs.install(level="INFO")
@@ -138,5 +143,4 @@ def eval(**kwargs):
 
 
 if __name__ == "__main__":
-    kwargs_ = {"bistr": "00000100010101010101", "region": "SC"}
-    eval(**kwargs_)
+    fire.Fire(eval)

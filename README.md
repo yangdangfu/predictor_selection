@@ -25,6 +25,14 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
   - [score.py](score.py): A module to compute scores of prediction
   - [weights_attribution.py](weights_attribution.py): Module to attribute weights to different predictors
   - [main_eval.py](main_eval.py): Script to run prediction, evaluation and other processes for trained CNN models, all intermediate results will be saved for latter use
+  - [main_multirun.py](main_multirun.py): Script for multiple-run strategy, that is run the training and evaluation for multiple times
+
+
+# Special Notes
+
+The K-fold cross-validation is implemented in [train](main_train.py) and [eval](main_eval.py) processes. 
+
+The Multiple-run strategy is implemented in [main_multirun.py](main_multirun.py) by executing the train and eval multiple times. Automatic runs counting is supported. 
 
 # Key Python requirements
 - Anaconda (numpy, pandas, etc.)
