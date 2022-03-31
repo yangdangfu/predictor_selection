@@ -6,13 +6,7 @@ from typing import List
 class PredictorSelector:
     def __init__(
         self,
-        predictors_all: list = [
-            'air1000', 'air500', 'air700', 'air850', 'hgt1000', 'hgt500',
-            'hgt700', 'hgt850', 'shum1000', 'shum500', 'shum700', 'shum850',
-            'uwnd1000', 'uwnd500', 'uwnd700', 'uwnd850', 'vwnd1000', 'vwnd500',
-            'vwnd700', 'vwnd850'
-        ]
-    ) -> None:
+        predictors_all: list) -> None:
         self._PREDICTORS_ALL = copy.deepcopy(predictors_all)
         self.predictors_left = copy.deepcopy(predictors_all)
         self.predictors_fix = list()  # predictors that shouldn't be removed

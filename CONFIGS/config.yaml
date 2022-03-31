@@ -64,6 +64,7 @@ out_mask_filepath: ${data_path}/${DATAS.factor}_{region}_grid_mask.npy
 
 # ---------------------------------------------------------------------------- #
 # ANCHOR Dataloader or Dataset
+candidate_predictors: ['air1000', 'air500', 'air700', 'air850', 'hgt1000', 'hgt500', 'hgt700', 'hgt850', 'shum1000', 'shum500', 'shum700', 'shum850', 'uwnd1000', 'uwnd500', 'uwnd700', 'uwnd850', 'vwnd1000', 'vwnd500', 'vwnd700', 'vwnd850']
 region: SC
 start_year: 1979
 end_year: 2021
@@ -92,4 +93,7 @@ optim_type: adam # adam or sgd
 loss_type: nan_mse
 lr: 1e-3
 weight_decay: 0
-# 
+
+# ---------------------------------------------------------------------------- #
+# ANCHOR Trainer 
+

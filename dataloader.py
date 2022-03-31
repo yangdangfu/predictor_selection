@@ -21,7 +21,6 @@ class DownscalingDataLoader(pl.LightningDataModule):
     def __init__(
         self,
         cfg: DictConfig,
-        selector: PredictorSelector,
         train_yrs_idx: list,
         val_yrs_idx: list,
         test_yrs_idx: list,
@@ -35,6 +34,8 @@ class DownscalingDataLoader(pl.LightningDataModule):
 
         # Data loading
         ## for input
+        selector = PredictorSelector(
+            OmegaConf.to_object(cfg.candidate_predictors))
         predictors_sub = selector.get_predictors_sub(cfg.bistr)
         x_noaug = xr.open_dataset(in_noaug_filepath)[predictors_sub]
         logger.info(
@@ -206,9 +207,7 @@ if __name__ == "__main__":
     logger.info(
         f"Initial splits: #train - {len(train_index)}, #val - {len(val_index)}, #test - {test_index}"
     )
-    selector = PredictorSelector()
-    dm = DownscalingDataLoader(cfg, selector, train_index, val_index,
-                               test_index)
+    dm = DownscalingDataLoader(cfg, train_index, val_index, test_index)
     dm.setup("fit")
     for x, y in dm.train_dataloader():
         print(x.shape, y.shape)
