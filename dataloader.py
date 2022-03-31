@@ -2,7 +2,7 @@
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import pytorch_lightning as pl
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from typing import Optional
 import xarray as xr
 import numpy as np
@@ -13,6 +13,8 @@ from selector.predictor_selector import PredictorSelector
 from utils.preprocessing import SequentialProcessor
 
 import logging
+import os
+from hydra.utils import to_absolute_path
 
 logger = logging.getLogger(__name__)
 
@@ -26,11 +28,16 @@ class DownscalingDataLoader(pl.LightningDataModule):
         test_yrs_idx: list,
     ):
         super().__init__()
-        in_noaug_filepath = cfg.in_noaug_filepath.format(region=cfg.region)
-        in_aug_filepath = cfg.in_aug_filepath.format(region=cfg.region)
-        out_noaug_filepath = cfg.out_noaug_filepath.format(region=cfg.region)
-        out_aug_filepath = cfg.out_aug_filepath.format(region=cfg.region)
-        out_mask_filepath = cfg.out_mask_filepath.format(region=cfg.region)
+        in_noaug_filepath = to_absolute_path(
+            cfg.in_noaug_filepath.format(region=cfg.region))
+        in_aug_filepath = to_absolute_path(
+            cfg.in_aug_filepath.format(region=cfg.region))
+        out_noaug_filepath = to_absolute_path(
+            cfg.out_noaug_filepath.format(region=cfg.region))
+        out_aug_filepath = to_absolute_path(
+            cfg.out_aug_filepath.format(region=cfg.region))
+        out_mask_filepath = to_absolute_path(
+            cfg.out_mask_filepath.format(region=cfg.region))
 
         # Data loading
         ## for input
@@ -146,7 +153,7 @@ class DownscalingDataLoader(pl.LightningDataModule):
         self.grid_mask = grid_mask
         self.lat = y_noaug.lat.values
         self.lon = y_noaug.lon.values
-        self.in_height, self.in_width = self.x_test.shape[-2:]
+        self.in_channels, self.in_height, self.in_width = self.x_test.shape[1:]
         self.out_height, self.out_width = self.y_test.shape[-2:]
 
     def prepare_data(self) -> None:

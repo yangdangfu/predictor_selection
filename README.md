@@ -17,10 +17,12 @@ The repository is working in progress, organizing and migrating the code from or
 - CNN model
   - [dataloader.py](dataloader.py): dataloader module for Pytorch training
   - [model_wrapper.py](model_wrapper.py): module to wrap all CNN archs together with pytorch_lightning
+  - [trainer.py](trainer.py): module to train the CNN, implementing based on pytorch_lightning and hydra
 
 # Key Python requirements
 - Anaconda (numpy, pandas, etc.)
+- hydra-core
 - xarray
 - pytorch
-- pytorch_lightning
+- pytorch-lightning  
 - fire

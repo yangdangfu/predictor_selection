@@ -96,4 +96,23 @@ weight_decay: 0
 
 # ---------------------------------------------------------------------------- #
 # ANCHOR Trainer 
+model_save_dir: models
+gpu: 0
+max_epochs: 200
+monitor: loss_val 
 
+# ---------------------------------------------------------------------------- #
+# ANCHOR output paths for trainer
+run_root: outputs_${region}
+hydra:
+  run:
+    dir: ${run_root}/${now:%Y%m%d-%H%M%S}${hydra.job.override_dirname}
+  job:
+    config:
+      override_dirname:
+        exclude_keys:
+          - batch_size
+          - gpu
+  sweep:
+    dir: ${run_root}
+    subdir: ${now:%Y%m%d-%H%M%S}${hydra.job.override_dirname}

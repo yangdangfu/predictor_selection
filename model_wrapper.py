@@ -3,7 +3,6 @@
 
 from omegaconf.dictconfig import DictConfig
 import torch
-import numpy as np
 import torch.optim as optim
 import pytorch_lightning as pl
 from architectures import general_cnn
@@ -12,15 +11,13 @@ import torch.nn as nn
 
 class ModelWrapper(pl.LightningModule):
     def __init__(self, cfg: DictConfig, in_channels: int, in_height: int,
-                 in_width: int) -> None:
+                 in_width: int, out_features: int) -> None:
         super().__init__()
         self.save_hyperparameters()
         if isinstance(cfg.seed, int):
             torch.manual_seed(cfg.seed)
         self.cfg = cfg
 
-        grid_mask = np.load(cfg.out_mask_filepath.format(region=cfg.region))
-        out_features = grid_mask.sum()
         self.model = general_cnn.instantiate_model(cfg.model,
                                                    in_channels,
                                                    in_height,
