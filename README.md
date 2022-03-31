@@ -14,6 +14,7 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
   - [utils.preprocessing.py](utils/preprocessing.py): data preprocessing and anti-processing functions
   - [utils/dataset_splits.py](utils/dataset_splits.py): module to perform dataset split
   - [utils/get_rundirs.py](utils/get_rundirs.py): functions to fetch the directories according to given parameters (the trained models of different parameters are saved in directories in a regular way)
+  - [utils/cli_utils.py](utils/cli_utils.py): defined a function to check required argument list in CLI
 - Selector
   - [selector.predictor_selector.py](selector/predictor_selector.py): predictor selector
 - CNN model
@@ -26,6 +27,7 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
   - [weights_attribution.py](weights_attribution.py): Module to attribute weights to different predictors
   - [main_eval.py](main_eval.py): Script to run prediction, evaluation and other processes for trained CNN models, all intermediate results will be saved for latter use
   - [main_multirun.py](main_multirun.py): Script for multiple-run strategy, that is run the training and evaluation for multiple times
+  - [main_select.py](main_select.py): Script CLI wrapping all the routines of predictor selection on CNNs
 
 
 # Special Notes
