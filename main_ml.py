@@ -142,7 +142,7 @@ def ml_pred_eval(re_pred: bool, re_score: bool, region: str, bistr: str):
                     xlat_idx = near_lat_idx[lat_idx]
                     xlon_idx = near_lon_idx[lon_idx]
                     std_x = {
-                        dset: std_inputs["train"].isel(lat=xlat_idx,
+                        dset: std_inputs[dset].isel(lat=xlat_idx,
                                                        lon=xlon_idx)
                         for dset in DSET_TYPES
                     }
@@ -202,5 +202,5 @@ def ml_pred_eval(re_pred: bool, re_score: bool, region: str, bistr: str):
 
 if __name__ == "__main__":
     coloredlogs.install(level="INFO", logger=logger)
-    # ml_pred_eval(False, True, "SC", "11111111111111111111")
+    # ml_pred_eval(True, True, "SC", "11111111111111111111")
     fire.Fire(ml_pred_eval)
