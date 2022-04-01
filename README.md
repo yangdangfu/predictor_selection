@@ -28,9 +28,8 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
   - [main_eval.py](main_eval.py): Script to run prediction, evaluation and other processes for trained CNN models, all intermediate results will be saved for latter use
   - [main_multirun.py](main_multirun.py): Script for multiple-run strategy, that is run the training and evaluation for multiple times
   - [main_select.py](main_select.py): Script CLI wrapping all the routines of predictor selection on CNNs
-
-
-# Special Notes
+  - [predict_ml.py](predict_ml.py): Module to predict and combine grid-wise predictions using linear regression models
+  - [main_ml.py](main_ml.py): Script for fitting, prediction, evaluation of linear regression models
 
 The K-fold cross-validation is implemented in [train](main_train.py) and [eval](main_eval.py) processes. 
 
