@@ -39,8 +39,16 @@ def get_weights(rundirs: list, dset: Literal["train", "val", "test"] = "val"):
     return weights.tolist(), predictors
 
 
-def run_select(reverse_sel: bool, multirun: int, re_pred: bool,
-               re_weight: bool, re_score: bool, **run_kwargs):
+def run_select(reverse_sel: bool,
+               multirun: int,
+               re_pred: bool,
+               re_weight: bool,
+               re_score: bool,
+               skip_runs=False,
+               **run_kwargs):
+    """ 
+    Note: set `skip_runs` to `True` if you wanna to skip both CNN and LR runs. The situation is mainly used for post-procedures, like plot, etc 
+    """
     REQUIRED_KEYS = ["region", "model"]
     arguments_check(run_kwargs.keys(), REQUIRED_KEYS)
 
@@ -57,11 +65,12 @@ def run_select(reverse_sel: bool, multirun: int, re_pred: bool,
         cmd_sufix = ""
         for key, val in run_kwargs.items():
             cmd_sufix += f" --{key} {val}"
-        # run cnn
-        run_cmd_cnn = f"python main_multirun.py --num {multirun} --re_pred {re_pred} --re_weight {re_weight} --re_score {re_score}" + cmd_sufix  # --weight_decay {run_kwargs['weight_decay']}
-        logger.info(f"Execute run command {run_cmd_cnn} ......")
-        subprocess.run(run_cmd_cnn.split(" "))
-        logger.info(f"Execute run command {run_cmd_cnn} donw")
+        if not skip_runs:
+            # run cnn
+            run_cmd_cnn = f"python main_multirun.py --num {multirun} --re_pred {re_pred} --re_weight {re_weight} --re_score {re_score}" + cmd_sufix  # --weight_decay {run_kwargs['weight_decay']}
+            logger.info(f"Execute run command {run_cmd_cnn} ......")
+            subprocess.run(run_cmd_cnn.split(" "))
+            logger.info(f"Execute run command {run_cmd_cnn} donw")
 
         root_dir = f"outputs_{run_kwargs['region']}"
         rundirs = get_rundirs(root_dir, run_kwargs)
@@ -80,12 +89,14 @@ def run_select(reverse_sel: bool, multirun: int, re_pred: bool,
             f"Removed predictor: {predictor_removed}, Binary strings: {selector.get_binary_strings()}"
         )
 
-    # run LM
-    for bistr in bi_strings:
-        run_cmd_ml = f"python main_ml.py --re_pred {re_pred} --re_score {re_score} --region {run_kwargs['region']} --bistr {bistr}"
-        logger.info(f"Execute run command {run_cmd_ml} ......")
-        subprocess.run(run_cmd_ml.split(" "))
-        logger.info(f"Execute run command {run_cmd_ml} donw")
+    if not skip_runs:
+        # run LM
+        for bistr in bi_strings:
+            run_cmd_ml = f"python main_ml.py --re_pred {re_pred} --re_score {re_score} --region {run_kwargs['region']} --bistr {bistr}"
+            logger.info(f"Execute run command {run_cmd_ml} ......")
+            subprocess.run(run_cmd_ml.split(" "))
+            logger.info(f"Execute run command {run_cmd_ml} donw")
+    return bi_strings
 
 
 if __name__ == "__main__":
@@ -93,6 +104,10 @@ if __name__ == "__main__":
     # reverse_select_ = False
     # multirun_ = 2
     # run_kwargs_ = dict(region="SC", model="CNN10")
-    # res = run_select(reverse_select_, multirun_, False, False, False, **run_kwargs_)
+    # res = run_select(reverse_select_, multirun_, False, False, False,
+    #                  **run_kwargs_)
+    # print(res)
+    # res = run_select(reverse_select_, multirun_, False, False, False, True,
+    #                  **run_kwargs_)
     # print(res)
     fire.Fire(run_select)
