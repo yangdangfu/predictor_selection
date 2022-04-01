@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """ 
 Usages:
+- for predictor selection
     python main_select.py --reverse_sel False --multirun 10 --re_pred False --re_weight False --re_score False --region SC --model CNN10
+- for reverse predictor selection
+    python main_select.py --reverse_sel True --multirun 10 --re_pred False --re_weight False --re_score False --region SC --model CNN10
 """
 import subprocess
 from typing import Literal
@@ -47,12 +50,14 @@ def run_select(reverse_sel: bool, multirun: int, re_pred: bool,
     selector = PredictorSelector(predictors_all)
     run_kwargs.update(bistr=selector.get_binary_strings())  # add a bistr arg
 
+    bi_strings = list()
     for _ in range(num_predictors):
+        bi_strings.append(run_kwargs["bistr"])
         # if len(rundirs) < multirun:
         cmd_sufix = ""
         for key, val in run_kwargs.items():
             cmd_sufix += f" --{key} {val}"
-        # run
+        # run cnn
         run_cmd_cnn = f"python main_multirun.py --num {multirun} --re_pred {re_pred} --re_weight {re_weight} --re_score {re_score}" + cmd_sufix  # --weight_decay {run_kwargs['weight_decay']}
         logger.info(f"Execute run command {run_cmd_cnn} ......")
         subprocess.run(run_cmd_cnn.split(" "))
@@ -75,11 +80,19 @@ def run_select(reverse_sel: bool, multirun: int, re_pred: bool,
             f"Removed predictor: {predictor_removed}, Binary strings: {selector.get_binary_strings()}"
         )
 
+    # run LM
+    for bistr in bi_strings:
+        run_cmd_ml = f"python main_ml.py --re_pred {re_pred} --re_score {re_score} --region {run_kwargs['region']} --bistr {bistr}"
+        logger.info(f"Execute run command {run_cmd_ml} ......")
+        subprocess.run(run_cmd_ml.split(" "))
+        logger.info(f"Execute run command {run_cmd_ml} donw")
+
 
 if __name__ == "__main__":
-    coloredlogs.install(level="INFO")
+    coloredlogs.install(level="INFO", logger=logger)
     # reverse_select_ = False
     # multirun_ = 2
     # run_kwargs_ = dict(region="SC", model="CNN10")
-    # run_select(reverse_select_, multirun_, False, False, False, **run_kwargs_)
+    # res = run_select(reverse_select_, multirun_, False, False, False, **run_kwargs_)
+    # print(res)
     fire.Fire(run_select)
