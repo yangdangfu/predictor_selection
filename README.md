@@ -11,6 +11,11 @@ The repository is working in progress, organizing and migrating the code from or
 ```
 python main_data_preparation.py --region SC
 ```
+
+Or download data from [TeraBox](https://terabox.com/s/16dzxGEaVFbd-1pMN0GRZDA) or [BaiduDisk](https://pan.baidu.com/s/1ZJlR-P5TJ9uzHTtMqMO6YQ?pwd=su6p). Put the download folder `DATA` under the project directory.
+
+If the raw data is not well-prepared, the later option is better.
+
 2. Run predictor elimination algorithm 
 ```
 python main_select.py --reverse_sel False --multirun 10 --re_pred False --re_weight False --re_score False --region SC --model CNN10
