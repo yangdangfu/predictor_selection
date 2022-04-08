@@ -1,6 +1,7 @@
 .vscode
 DATA/
 outputs_*/
+IMAGES/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

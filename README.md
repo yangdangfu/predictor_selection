@@ -33,6 +33,12 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
 - Program
   - [main_select.py](main_select.py): Script CLI wrapping all the routines of predictor selection on CNNs
 - Plot
+  - `plots` package
+    - [plots/agg_scores.py](plots/agg_scores.py): Module for aggregating and averaging scores over models of multiple-run.
+    - [plots/draw_boxplot.py](plots/draw_boxplot.py): Module for drawing box plots
+    - [plots/draw_dist.py](plots/draw_dist.py): Module for drawing geographic distribution
+  - [main_draw_scores.py](main_draw_scores.py): Script for drawing RMSE, ATCC, CC scores in line, distribution and box plots.
+  
 
 The K-fold cross-validation is implemented in [train](main_train.py) and [eval](main_eval.py) processes. 
 
