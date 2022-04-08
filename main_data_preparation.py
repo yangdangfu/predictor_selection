@@ -141,14 +141,14 @@ def prepare_data(region: str):
     data_info = cfg_.DATAS
 
     # daily data
-    out_da, grid_mask, in_ds = load_daily_data(data_info, region_info)
-    out_daily_filepath = cfg_.out_daily_filepath.format(region=region)
-    out_mask_daily_filepath = cfg_.out_mask_daily_filepath.format(
-        region=region)
-    in_daily_filepath = cfg_.in_daily_filepath.format(region=region)
-    out_da.to_netcdf(out_daily_filepath)
-    np.save(out_mask_daily_filepath, grid_mask)
-    in_ds.to_netcdf(in_daily_filepath)
+    # out_da, grid_mask, in_ds = load_daily_data(data_info, region_info)
+    # out_daily_filepath = cfg_.out_daily_filepath.format(region=region)
+    # out_mask_daily_filepath = cfg_.out_mask_daily_filepath.format(
+    #     region=region)
+    # in_daily_filepath = cfg_.in_daily_filepath.format(region=region)
+    # out_da.to_netcdf(out_daily_filepath)
+    # np.save(out_mask_daily_filepath, grid_mask)
+    # in_ds.to_netcdf(in_daily_filepath)
     # monthly data
     out_noaug_da, out_aug_da, grid_mask, in_noaug_ds, in_aug_ds = load_monthly_data(
         data_info, region_info)
@@ -162,6 +162,7 @@ def prepare_data(region: str):
     np.save(out_mask_filepath, grid_mask)
     in_noaug_ds.to_netcdf(in_noaug_filepath)
     in_aug_ds.to_netcdf(in_aug_filepath)
+
 
 if __name__ == "__main__":
     fire.Fire(prepare_data)
