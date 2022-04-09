@@ -7,6 +7,8 @@ The results are saved in folder ./IMAGES
 
 from os import path
 import os
+
+from omegaconf import OmegaConf
 from utils.get_rundirs import get_rundirs
 from main_select import run_select
 from plots.agg_scores import agg_score_spatial, agg_score_temporal
@@ -204,8 +206,10 @@ def draw(reverse_sel: bool, dset: str, multirun: int, region: str, model: str):
                     dpi=320)
 
         # dist plot
-        region_info = dict(region_level="PROVINCE",
-                           region_names=["Guangdong", "Guangxi", "Hainan"])
+        cfg = OmegaConf.load("CONFIGS/config.yaml")
+        region_info = cfg.REGIONS[region].shape_range
+        # region_info = dict(region_level="PROVINCE",
+        #                    region_names=["Guangdong", "Guangxi", "Hainan"])
         fig, axes = plt.subplots(nrows=1,
                                  ncols=3,
                                  subplot_kw={"projection": ccrs.PlateCarree()},
