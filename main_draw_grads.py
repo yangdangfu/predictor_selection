@@ -178,7 +178,8 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str, save_root
     for var in weights_t_avg.variables.values.tolist():
         w_var = weights_t_avg.sel(variables=var)
         vmax = np.fabs(w_var).max().item()
-        contour_kw_def.update(vmin=-vmax, vmax=vmax)
+        w_var = w_var / vmax
+        contour_kw_def.update(vmin=-1, vmax=1)
         for grid_idx in weights_t_avg.grid.values.tolist():
             print(f"{bistr} {var} {grid_idx}")
             w = w_var.sel(grid=grid_idx)
@@ -193,8 +194,9 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str, save_root
                              w.values.squeeze(),
                              transform=ccrs.PlateCarree(),
                              **contour_kw_def)
+            img_fname = f"{save_root}/{var}_g{grid_idx}_{bistr}.png"
             add_basemap(region=region, ax=ax, grid_idx=grid_idx)
-            fig.savefig(f"{save_root}/{var}_g{grid_idx}_{bistr}.png",
+            fig.savefig(img_fname,
                         bbox_inches="tight")
             plt.close()
 
@@ -205,11 +207,11 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str, save_root
                     f"{save_root}/{var}_g{grid_idx}_{bistr}.png"
                     for grid_idx in weights_t_avg.grid.values.tolist()
             ]
-            for filename in fnames:
+            for filename in img_fnames:
                 image = imageio.imread(filename)
                 writer.append_data(image)
 
-            for filename in fnames: 
+            for filename in img_fnames: 
                 os.remove(filename)
 
 
