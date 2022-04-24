@@ -63,6 +63,7 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
   - [main_ml.py](main_ml.py): Script for fitting, prediction, evaluation of linear regression models
 - Program
   - [main_select.py](main_select.py): Script CLI wrapping all the routines of predictor selection on CNNs
+  - [main_select_cc.py](main_select_cc.py): Script CLI wrapping all the routines of predictor selection using correlation analysis method on CNNs
 - Plot
   - `plots` package
     - [plots/agg_scores.py](plots/agg_scores.py): Module for aggregating and averaging scores over models of multiple-run.
@@ -70,11 +71,14 @@ Note: Scripts are the main entry of the programs that can perform certain tasks,
     - [plots/draw_dist.py](plots/draw_dist.py): Module for drawing geographic distribution
   - [main_draw_scores.py](main_draw_scores.py): Script for drawing RMSE, ATCC, CC scores in line, distribution and box plots.
 
-
 The K-fold cross-validation is implemented in [train](main_train.py) and [eval](main_eval.py) processes. 
 
 The Multiple-run strategy is implemented in [main_multirun.py](main_multirun.py) by executing the train and eval multiple times. Automatic runs counting is supported. 
 
+# Plots 
+## Plots using [main_draw_scores.py](main_draw_scores.py)
+
+![]()
 # Key Python requirements
 - Anaconda (numpy, pandas, etc.)
 - hydra-core
