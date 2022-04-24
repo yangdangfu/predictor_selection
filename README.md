@@ -1,26 +1,20 @@
 Predictor Selection for CNNs Inputting Stacked Variables
 ---
 
-- [1. Work-in-progress Statement:](#1-work-in-progress-statement)
-- [2. Quick reproduction](#2-quick-reproduction)
-  - [2.1. Reproduce the greedy elimination based on gradient-based importance metric](#21-reproduce-the-greedy-elimination-based-on-gradient-based-importance-metric)
-  - [2.2. Reproduce the greedy elimination based on correlation analysis](#22-reproduce-the-greedy-elimination-based-on-correlation-analysis)
+- [1. Quick start](#1-quick-start)
+  - [1.1. Greedy elimination based on gradient-based importance metric or correlation coefficients](#11-greedy-elimination-based-on-gradient-based-importance-metric-or-correlation-coefficients)
+- [2. Draw Results](#2-draw-results)
+  - [2.1. Plot results using main_draw_scores.py](#21-plot-results-using-main_draw_scorespy)
+    - [2.1.1. Predictor elimination](#211-predictor-elimination)
+      - [2.1.1.1. Line plots](#2111-line-plots)
+      - [2.1.1.2. Distribution and box plots of selected models](#2112-distribution-and-box-plots-of-selected-models)
+    - [2.1.2. Reverse predictor elimination](#212-reverse-predictor-elimination)
+    - [2.1.3. Predictor elimination according to *Correlation Coefficients*](#213-predictor-elimination-according-to-correlation-coefficients)
 - [3. Important scripts/modules/packages](#3-important-scriptsmodulespackages)
-- [4. Plots](#4-plots)
-  - [4.1. Plot results using main_draw_scores.py](#41-plot-results-using-main_draw_scorespy)
-    - [4.1.1. Predictor elimination](#411-predictor-elimination)
-      - [4.1.1.1. Line plots](#4111-line-plots)
-      - [4.1.1.2. Distribution and box plots of selected models](#4112-distribution-and-box-plots-of-selected-models)
-    - [4.1.2. Reverse predictor elimination](#412-reverse-predictor-elimination)
-    - [Predictor elimination according to *Correlation Coefficients*](#predictor-elimination-according-to-correlation-coefficients)
-- [5. Key Python requirements](#5-key-python-requirements)
+- [4. Key Python requirements](#4-key-python-requirements)
 
-# 1. Work-in-progress Statement:
-    
-The repository is working in progress, organizing and migrating the code from original implementations. 
-
-# 2. Quick reproduction
-## 2.1. Reproduce the greedy elimination based on gradient-based importance metric
+# 1. Quick start
+## 1.1. Greedy elimination based on gradient-based importance metric or correlation coefficients
 1. Prepare data
 ```
 python main_data_preparation.py --region SC
@@ -38,17 +32,56 @@ python main_select.py --reverse_sel False --multirun 10 --re_pred False --re_wei
 ```
 python main_select.py --reverse_sel True --multirun 10 --re_pred False --re_weight False --re_score False --region SC --model CNN10
 ```
-4. Draw results
+4. Run predictor elimination based on correlation analysis
 ```
-python main_draw_scores.py --region SC --model CNN10 --multirun 10
+python main_select_cc.py --reverse_sel False --multirun 10 --re_pred False --re_weight False --re_score False --region SC --model CNN10
+```
+5. Draw results
+- draw results of GBP-based predictor elimination
+```bash
+python main_draw_scores.py --cc False --reverse_sel False --dset test --region SC --model CNN10 --multirun 10
+python main_draw_scores.py --cc False --reverse_sel True --dset test --region SC --model CNN10 --multirun 10
+The results are saved in folder ./IMAGES
+```
+- draw results of correlation-analysis-based predictor elimination
+```bash
+python main_draw_scores.py --cc True --reverse_sel False --dset test --region SC --model CNN10 --multirun 10
 ```
 The last drawing command will plot all the experimental scores in folder `./IMAGES`.
 
 Modify `--multirun 10` to `--multirun 1` for a quicker experiment, which will disable the multiple-run strategy. 
 
 Modify the arguments `model` to `CNNdense`, `CNN1`, `CNN-FC`, `CNN-LM`, `CNN-PR` to run experiments using other models. 
-## 2.2. Reproduce the greedy elimination based on correlation analysis
-...
+
+# 2. Draw Results
+## 2.1. Plot results using [main_draw_scores.py](main_draw_scores.py)
+
+### 2.1.1. Predictor elimination  
+#### 2.1.1.1. Line plots
+| RMSE                                                                                                 | CC                                                                                                   | ATCC                                                                                                 |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> |
+
+#### 2.1.1.2. Distribution and box plots of selected models
+| RMSE                                                                                                     | CC                                                                                                     | ATCC                                                                                                     |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| <img src="IMAGES_SAVED/boxplot_rmse__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/boxplot_cc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/boxplot_atcc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> |
+
+ATCC & bias & box plots of bias
+|                                                                                                        |                                                                                                                |
+| ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| <img src="IMAGES_SAVED/dist_atcc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140"> | <img src="IMAGES_SAVED/boxplot_atcc_bias__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140"> |
+
+### 2.1.2. Reverse predictor elimination  
+
+| RMSE                                                                                                | CC                                                                                                  | ATCC                                                                                                |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-True_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-True_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-True_dset-test.png" width="250"> |
+
+### 2.1.3. Predictor elimination according to *Correlation Coefficients*
+| RMSE                                                                                                      | CC                                                                                                        | ATCC                                                                                                      |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> |
 
 # 3. Important scripts/modules/packages
 Note: Scripts are the main entry of the programs that can perform certain tasks, such as `main_data_preparation.py` can be executed to prepare data; `main_train.py` is used to train the models without multiple-run; 'main_multirun.py' wraps `main_train.py` and `main_eval.py` to perform model train & evaluation with multiple-run support.
@@ -89,37 +122,7 @@ The K-fold cross-validation is implemented in [train](main_train.py) and [eval](
 
 The Multiple-run strategy is implemented in [main_multirun.py](main_multirun.py) by executing the train and eval multiple times. Automatic runs counting is supported. 
 
-# 4. Plots 
-## 4.1. Plot results using [main_draw_scores.py](main_draw_scores.py)
-
-### 4.1.1. Predictor elimination  
-#### 4.1.1.1. Line plots
-| RMSE                                                                                                 | CC                                                                                                   | ATCC                                                                                                 |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> |
-
-#### 4.1.1.2. Distribution and box plots of selected models
-| RMSE                                                                                                     | CC                                                                                                     | ATCC                                                                                                     |
-| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| <img src="IMAGES_SAVED/boxplot_rmse__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/boxplot_cc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/boxplot_atcc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> |
-
-ATCC & bias & box plots of bias
-|                                                                                                        |                                                                                                                |
-| ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| <img src="IMAGES_SAVED/dist_atcc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140"> | <img src="IMAGES_SAVED/boxplot_atcc_bias__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140"> |
-
-### 4.1.2. Reverse predictor elimination  
-
-| RMSE                                                                                                | CC                                                                                                  | ATCC                                                                                                |
-| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-True_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-True_dset-test.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-True_dset-test.png" width="250"> |
-
-### Predictor elimination according to *Correlation Coefficients*
-| RMSE                                                                                                      | CC                                                                                                        | ATCC                                                                                                      |
-| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> |
-
-# 5. Key Python requirements
+# 4. Key Python requirements
 - Anaconda (numpy, pandas, etc.)
 - hydra-core
 - xarray
