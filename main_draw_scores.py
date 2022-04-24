@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 """ 
 Usage: 
-    python main_draw_scores.py --region SC --model CNN10 --multirun 10
+    # draw results of GBP-based predictor elimination
+    python main_draw_scores.py --cc False --reverse_sel False --dset test --region SC --model CNN10 --multirun 10
+    python main_draw_scores.py --cc False --reverse_sel True --dset test --region SC --model CNN10 --multirun 10
+    # draw results of correlation-analysis-based predictor elimination
+    python main_draw_scores.py --cc True --reverse_sel False --dset test --region SC --model CNN10 --multirun 10
 The results are saved in folder ./IMAGES
 """
 
@@ -11,6 +15,7 @@ import os
 from omegaconf import OmegaConf
 from utils.get_rundirs import get_rundirs
 from main_select import run_select
+from main_select_cc import run_select as run_select_cc
 from plots.agg_scores import agg_score_spatial, agg_score_temporal
 from plots.draw_boxplot import draw_boxplot
 from plots.draw_dist import draw_dist
@@ -33,20 +38,11 @@ def calc_means(scores: list):
     return scores_mean
 
 
-# ANCHOR box plots of cc, atcc, rmse
-def box_plots():
-    ...
-
-
-# ANCHOR dist plots of atcc
-def dist_plots():
-    ...
-
-
 # ANCHOR line plots of means of cc, atcc, rmse
 def line_plots(scores_mean_cnn: dict,
-               scores_mean_ml: dict = None,
-               fname_dict: dict = None):
+               scores_mean_ml: dict,
+               reverse_sel: bool, 
+               fname_suffix: str):
     # plot style
     markersize = 100
 
@@ -58,7 +54,7 @@ def line_plots(scores_mean_cnn: dict,
         fig, ax = plt.subplots(figsize=(9.6, 6.4))
         ax.plot(means, marker=".", c="tab:orange", label="CNN")
         ax.axhline(y=means[0], c="tab:orange", ls=":", label="CNN reference")
-        if not fname_dict["reverse_sel"]:  # ugly code
+        if not reverse_sel:  # ugly code
             # better score scatters
             if "rmse" in s_type:
                 better_score = [(i, x) for i, x in enumerate(means)
@@ -108,24 +104,41 @@ def line_plots(scores_mean_cnn: dict,
         ax.legend()
 
         # save file
-        fname = f"IMAGES/line_{s_type}"
-        if fname_dict is not None:
-            for key, val in fname_dict.items():
-                fname += f"_{key}-{val}"
-        fname += ".png"
+        fname = f"IMAGES/line_{s_type}_{fname_suffix}.png"
         fig.savefig(fname, bbox_inches="tight", dpi=320)
 
 
-def draw(reverse_sel: bool, dset: str, multirun: int, region: str, model: str):
+def draw(cc: bool, reverse_sel: bool, dset: str, multirun: int, region: str,
+         model: str):
+    """draw results 
+
+    Args:
+        cc (bool): use correlation-analysis-based method or not
+        reverse_sel (bool): reverse elimination or not
+        dset (str): draw results on "val" or "test" dataset
+        multirun (int): number of runs
+        region (str): region name
+        model (str): model name
+    """
     # Obtain the binary strings of selected predictors
-    bi_strings = run_select(reverse_sel=reverse_sel,
-                            multirun=multirun,
-                            re_pred=False,
-                            re_weight=False,
-                            re_score=False,
-                            skip_runs=True,
-                            region=region,
-                            model=model)
+    if not cc:
+        bi_strings = run_select(reverse_sel=reverse_sel,
+                                multirun=multirun,
+                                re_pred=False,
+                                re_weight=False,
+                                re_score=False,
+                                skip_runs=True,
+                                region=region,
+                                model=model)
+    else:
+        bi_strings = run_select_cc(reverse_sel=reverse_sel,
+                                   multirun=multirun,
+                                   re_pred=False,
+                                   re_weight=False,
+                                   re_score=False,
+                                   skip_runs=True,
+                                   region=region,
+                                   model=model)
 
     fname_dict = dict()
     fname_dict.update(region=region,
@@ -136,6 +149,9 @@ def draw(reverse_sel: bool, dset: str, multirun: int, region: str, model: str):
     if fname_dict is not None:
         for key, val in fname_dict.items():
             fname_suffix += f"_{key}-{val}"
+    if cc:
+        # Add _CORR to the end of filenames for correlation-analysis-based plots
+        fname_suffix += "_CORR" 
 
     os.makedirs("./IMAGES", exist_ok=True)
     # Collect (averaged) scores
@@ -165,11 +181,11 @@ def draw(reverse_sel: bool, dset: str, multirun: int, region: str, model: str):
     mean_temporal_ml = calc_means(scores_temporal_ml)
 
     # line plots
-    line_plots(mean_spatial_cnn, mean_spatial_ml, fname_dict)  #
-    line_plots(mean_temporal_cnn, mean_temporal_ml, fname_dict)  #
+    line_plots(mean_spatial_cnn, mean_spatial_ml, reverse_sel, fname_suffix)  #
+    line_plots(mean_temporal_cnn, mean_temporal_ml, reverse_sel, fname_suffix)  #
 
     # no box and dist plot for reverse experiments
-    if reverse_sel:
+    if reverse_sel or cc:
         return
 
     # collect reference, best, and least models
@@ -297,10 +313,9 @@ def draw(reverse_sel: bool, dset: str, multirun: int, region: str, model: str):
                     dpi=320)
 
 
-def main(**run_kwargs):
-    for reverse_sel_ in [True, False]:
-        draw(reverse_sel_, "test", **run_kwargs)
-
+# def main(**run_kwargs):
+#     for reverse_sel_ in [True, False]:
+#         draw(reverse_sel_, "test", **run_kwargs)
 
 if __name__ == "__main__":
     # run_kwargs_ = {"region": "SC", "model": "CNN10"}
@@ -308,4 +323,4 @@ if __name__ == "__main__":
     # multirun_ = 10
     # for reverse_sel_ in [True, False]:
     #     main(reverse_sel_, multirun_, "test", **run_kwargs_)
-    fire.Fire(main)
+    fire.Fire(draw)
