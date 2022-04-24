@@ -104,11 +104,9 @@ The Multiple-run strategy is implemented in [main_multirun.py](main_multirun.py)
 | <img src="IMAGES_SAVED/boxplot_rmse__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/boxplot_cc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> | <img src="IMAGES_SAVED/boxplot_atcc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" width="250"> |
 
 ATCC & bias & box plots of bias
-<center>
-<img src="IMAGES_SAVED/dist_atcc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140">
-<img src="IMAGES_SAVED/boxplot_atcc_bias__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140">
-</center>
-
+|                                                                                                        |                                                                                                                |
+| ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| <img src="IMAGES_SAVED/dist_atcc__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140"> | <img src="IMAGES_SAVED/boxplot_atcc_bias__region-SC_model-CNN10_reverse_sel-False_dset-test.png" height="140"> |
 
 ### 4.1.2. Reverse predictor elimination  
 
