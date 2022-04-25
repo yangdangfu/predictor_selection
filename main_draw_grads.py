@@ -162,7 +162,7 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str,
                 figsize=(6, 6),
                 frameon=True,
                 tight_layout=True,
-                dpi=320)
+                dpi=72)
             cf = ax.contourf(lon,
                              lat,
                              w.values.squeeze(),
@@ -189,7 +189,7 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str,
                 figsize=(6, 6),
                 frameon=True,
                 tight_layout=True,
-                dpi=144)
+                dpi=72)
             cf = ax.contourf(lon,
                              lat,
                              w.values.squeeze(),
