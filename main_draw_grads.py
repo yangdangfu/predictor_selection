@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-# %%
+"""
+Usage: 
+    python main_draw_grads.py
+"""
 import logging
 from os import path
 from typing import Literal
@@ -85,7 +88,6 @@ def agg_weights(rundirs: list, dset: Literal["train", "val", "test"] = "val"):
     return weights_avg
 
 
-# %%
 def add_basemap(region: str, ax: plt.Axes, grid_idx: int):
     cfg = OmegaConf.load("CONFIGS/config.yaml")
     region_info = OmegaConf.to_container(cfg.REGIONS[region].shape_range)
@@ -213,7 +215,6 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str,
                 os.remove(filename)
 
 
-# %%
 if __name__ == "__main__":
     region_ = "SC"
     model_ = "CNN10"

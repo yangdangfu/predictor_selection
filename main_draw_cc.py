@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-# %%
+"""
+Usage: 
+    python main_draw_cc.py
+"""
 import logging
 from os import path
 from typing import Literal
