@@ -44,17 +44,24 @@ python main_select_cc.py --reverse_sel False --multirun 10 --re_pred False --re_
 ```bash
 python main_draw_scores.py --cc False --reverse_sel False --dset test --region SC --model CNN10 --multirun 10
 python main_draw_scores.py --cc False --reverse_sel True --dset test --region SC --model CNN10 --multirun 10
-The results are saved in folder ./IMAGES
 ```
 - draw results of correlation-analysis-based predictor elimination
 ```bash
 python main_draw_scores.py --cc True --reverse_sel False --dset test --region SC --model CNN10 --multirun 10
 ```
-The last drawing command will plot all the experimental scores in folder `./IMAGES`.
+- draw heatmaps
+```bash
+python main_draw_grads.py
+python main_draw_cc.py
+```
+All plots will be saved in folder `./IMAGES`.
+
 
 Modify `--multirun 10` to `--multirun 1` for a quicker experiment, which will disable the multiple-run strategy. 
 
 Modify the arguments `model` to `CNNdense`, `CNN1`, `CNN-FC`, `CNN-LM`, `CNN-PR` to run experiments using other models. 
+
+Modify the arguments `region` to `Yangtze` to run experiments over reigon Yangtze River Basin. Note we also provide the well-prepared data for the region Yangtze in the given data download link. 
 
 # 2. Draw Results
 ## 2.1. Plot results using [main_draw_scores.py](main_draw_scores.py)
