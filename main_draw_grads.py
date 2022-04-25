@@ -49,7 +49,7 @@ def _eval_single(rundir: str, dset: str):
 
     models_dir = path.join(rundir, cfg.model_save_dir)
     # do prediction, extract observation
-    weights_all = list() # {dset: list() for dset in DSET_TYPES}
+    weights_all = list()  # {dset: list() for dset in DSET_TYPES}
     for fold_idx in range(len(split_list)):
         model = ModelWrapper.load_from_checkpoint(
             path.join(models_dir, f"best_{fold_idx}.ckpt"))
@@ -66,10 +66,8 @@ def _eval_single(rundir: str, dset: str):
         weights_all.append(weights)
 
     # concate and save the results
-    weights_all = xr.concat(weights_all,
-                                        dim='time').sortby("time").transpose(
-                                            "time", "variables", "grid", "lat",
-                                            "lon")
+    weights_all = xr.concat(weights_all, dim='time').sortby("time").transpose(
+        "time", "variables", "grid", "lat", "lon")
     # note: for training dataset, there are overlaps of data among different folds
     if dset == "train":
         weights_all = weights_all.groupby("time").mean()
@@ -133,7 +131,8 @@ def add_basemap(region: str, ax: plt.Axes, grid_idx: int):
             idx += 1
 
 
-def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str, save_root: str):
+def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str,
+                 save_root: str):
     os.makedirs(save_root, exist_ok=True)
     os.makedirs(save_root, exist_ok=True)
 
@@ -161,7 +160,7 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str, save_root
                 figsize=(6, 6),
                 frameon=True,
                 tight_layout=True,
-                dpi=320)
+                dpi=72)
             cf = ax.contourf(lon,
                              lat,
                              w.values.squeeze(),
@@ -188,7 +187,7 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str, save_root
                 figsize=(6, 6),
                 frameon=True,
                 tight_layout=True,
-                dpi=144)
+                dpi=72)
             cf = ax.contourf(lon,
                              lat,
                              w.values.squeeze(),
@@ -196,22 +195,21 @@ def draw_weights(weights_t_avg: xr.DataArray, region: str, bistr: str, save_root
                              **contour_kw_def)
             img_fname = f"{save_root}/{var}_g{grid_idx}_{bistr}.png"
             add_basemap(region=region, ax=ax, grid_idx=grid_idx)
-            fig.savefig(img_fname,
-                        bbox_inches="tight")
+            fig.savefig(img_fname, bbox_inches="tight")
             plt.close()
 
         # Build GIF
         with imageio.get_writer(f'{save_root}/{var}_{bistr}.gif',
                                 mode='I') as writer:
             img_fnames = [
-                    f"{save_root}/{var}_g{grid_idx}_{bistr}.png"
-                    for grid_idx in weights_t_avg.grid.values.tolist()
+                f"{save_root}/{var}_g{grid_idx}_{bistr}.png"
+                for grid_idx in weights_t_avg.grid.values.tolist()
             ]
             for filename in img_fnames:
                 image = imageio.imread(filename)
                 writer.append_data(image)
 
-            for filename in img_fnames: 
+            for filename in img_fnames:
                 os.remove(filename)
 
 
