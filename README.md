@@ -10,7 +10,7 @@ Predictor Selection for CNNs Inputting Stacked Variables
       - [2.1.1.2. Distribution and box plots of selected models](#2112-distribution-and-box-plots-of-selected-models)
     - [2.1.2. Reverse predictor elimination](#212-reverse-predictor-elimination)
     - [2.1.3. Predictor elimination according to *Correlation Coefficients*](#213-predictor-elimination-according-to-correlation-coefficients)
-  - [2.2. Plot results using main_draw_grads.py and [main_draw_cc.py](main_draw_cc.py)](#22-plot-results-using-main_draw_gradspy-and-main_draw_ccpy)
+  - [2.2. Heatmaps plot results](#22-heatmaps-plot-results)
     - [2.2.1. Heatmaps of selected predictors at the grid of intrest](#221-heatmaps-of-selected-predictors-at-the-grid-of-intrest)
     - [2.2.2. Heatmaps of selected predictors at all grids (gifs)](#222-heatmaps-of-selected-predictors-at-all-grids-gifs)
 - [3. Important scripts/modules/packages](#3-important-scriptsmodulespackages)
@@ -86,17 +86,18 @@ ATCC & bias & box plots of bias
 | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> | <img src="IMAGES_SAVED/line_rmse_region-SC_model-CNN10_reverse_sel-False_dset-test_CORR.png" width="250"> |
 
-## 2.2. Plot results using [main_draw_grads.py](main_draw_grads.py) and [main_draw_cc.py](main_draw_cc.py)
+## 2.2. Heatmaps plot results 
+> using [main_draw_grads.py](./main_draw_grads.py) and [main_draw_cc.py](./main_draw_cc.py)
 
 ### 2.2.1. Heatmaps of selected predictors at the grid of intrest
-See [IMAGES_SAVED/GRADS/](IMAGES_SAVED/GRADS/) and [IMAGES_SAVED/CC/](IMAGES_SAVED/CC/) for heatmaps (.png) of more predictors
+See [IMAGES_SAVED/GRADS/](IMAGES_SAVED/GRADS/) and [IMAGES_SAVED/CORR/](IMAGES_SAVED/CORR/) for heatmaps (.png) of more predictors
 | GRAD | <img src="IMAGES_SAVED/GRADS/g76_shum500_11111111111111111111.png" width="250"> | <img src="IMAGES_SAVED/GRADS/g76_uwnd500_11111111111111111111.png" width="250"> | <img src="IMAGES_SAVED/GRADS/g76_vwnd1000_11111111111111111111.png" width="250"> |
 | ---- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | CC   | <img src="IMAGES_SAVED/CORR/g76_shum500_cc.png" width="250">                    | <img src="IMAGES_SAVED/CORR/g76_uwnd500_cc.png" width="250">                    | <img src="IMAGES_SAVED/CORR/g76_vwnd1000_cc.png" width="250">                    |
 |      | shum500                                                                         | uwnd500                                                                         | vwnd1000                                                                         |
 
 ### 2.2.2. Heatmaps of selected predictors at all grids (gifs)
-See [IMAGES_SAVED/GRADS/](IMAGES_SAVED/GRADS/) and [IMAGES_SAVED/CC/](IMAGES_SAVED/CC/) for heatmaps (.gif)) of more predictors
+See [IMAGES_SAVED/GRADS/](IMAGES_SAVED/GRADS/) and [IMAGES_SAVED/CORR/](IMAGES_SAVED/CORR/) for heatmaps (.gif)) of more predictors
 | GRAD | <img src="IMAGES_SAVED/GRADS/shum500_11111111111111111111.gif" width="250"> | <img src="IMAGES_SAVED/GRADS/uwnd500_11111111111111111111.gif" width="250"> | <img src="IMAGES_SAVED/GRADS/vwnd1000_11111111111111111111.gif" width="250"> |
 | ---- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | CC   | <img src="IMAGES_SAVED/CORR/shum500_cc.gif" width="250">                    | <img src="IMAGES_SAVED/CORR/uwnd500_cc.gif" width="250">                    | <img src="IMAGES_SAVED/CORR/vwnd1000_cc.gif" width="250">                    |
