@@ -17,6 +17,16 @@ Predictor Selection for CNNs Inputting Stacked Variables
 - [4. Key Python requirements](#4-key-python-requirements)
 
 # 1. Quick start
+
+Note: Clone the repository using `recursive` command
+```
+git clone --recursive git@github.com:yangdangfu/predictor_selection.git
+```
+or 
+```
+git clone --recursive https://github.com/yangdangfu/predictor_selection.git
+```
+
 ## 1.1. Greedy elimination based on gradient-based importance metric or correlation coefficients
 1. Prepare data
 ```
